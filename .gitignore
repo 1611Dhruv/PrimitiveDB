@@ -4,3 +4,4 @@ dbcreate
 dbdestroy
 minirel
 compile_commands.json
+.cache
