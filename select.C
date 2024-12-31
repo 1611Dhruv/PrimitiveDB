@@ -1,5 +1,7 @@
 #include "catalog.h"
 #include "query.h"
+#include "stdio.h"
+#include "stdlib.h"
 
 // forward declaration
 const Status ScanSelect(const string &result, const int projCnt,
@@ -53,12 +55,10 @@ const Status QU_Select(const string &result, const int projCnt,
                     reclen);
 }
 
-const Status ScanSelect(const string &result,
-#include "stdio.h"
-#include "stdlib.h"
-                        const int projCnt, const AttrDesc projNames[],
-                        const AttrDesc *attrDesc, const Operator op,
-                        const char *filter, const int reclen) {
+const Status ScanSelect(const string &result, const int projCnt,
+                        const AttrDesc projNames[], const AttrDesc *attrDesc,
+                        const Operator op, const char *filter,
+                        const int reclen) {
   cout << "Doing HeapFileScan Selection using ScanSelect()" << endl;
 
   Status status;
@@ -68,7 +68,6 @@ const Status ScanSelect(const string &result,
   if (status != OK)
     return status;
 
-
   char outputData[reclen];
   Record outputRec;
   outputRec.data = (void *)outputData;
@@ -76,7 +75,8 @@ const Status ScanSelect(const string &result,
 
   // start scan on table
   HeapFileScan scan(string(projNames[0].relName), status);
-  if (status != OK) return status;
+  if (status != OK)
+    return status;
 
   int x;
   float f;
@@ -108,7 +108,8 @@ const Status ScanSelect(const string &result,
     status = scan.startScan(0, 0, STRING, NULL, EQ);
   }
 
-  if (status != OK) return status;
+  if (status != OK)
+    return status;
 
   // scan table
   struct RID RID;
@@ -124,9 +125,8 @@ const Status ScanSelect(const string &result,
     for (int i = 0; i < projCnt; i++) {
       // copy the data out
       // if (0 == strcmp(projNames[i].relName, attrDesc->relName)) {
-        memcpy(outputData + outputOffset,
-               (char *)rec.data + projNames[i].attrOffset,
-               projNames[i].attrLen);
+      memcpy(outputData + outputOffset,
+             (char *)rec.data + projNames[i].attrOffset, projNames[i].attrLen);
       // }
       outputOffset += projNames[i].attrLen;
     } // end copy attrs
