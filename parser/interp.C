@@ -598,7 +598,6 @@ static int mk_attrnames(NODE *list, char *attrnames[], char *relname) {
   if (list->kind == N_STAR) {
     AttrDesc *attr;
     int attrCnt;
-    cout << list->u.QUALATTR.relname << endl;
     relname = list->u.QUALATTR.relname;
     if (attrCat->getRelInfo(list->u.QUALATTR.relname, attrCnt, attr) != OK)
       return E_INCOMPATIBLE;

@@ -167,7 +167,6 @@ query
 	: RW_SELECT T_STAR opt_into_relname RW_FROM table_list opt_where
 /*	RW_SELECT opt_into_relname '(' non_mt_qualattr_list ')' opt_where */
 	{
-    printf("\nStar query\n");
 		NODE *where = replace_alias_in_condition($5, $6);
     if ((where == NULL) && ($6 != NULL)) {
        $$ = NULL; //something wrong in where condition
@@ -179,7 +178,6 @@ query
 	| RW_SELECT non_mt_qualattr_list opt_into_relname RW_FROM table_list opt_where
 /*	RW_SELECT opt_into_relname '(' non_mt_qualattr_list ')' opt_where */
 	{
-    printf("\nNon star query\n");
 		NODE *where;
 		NODE *qualattr_list = replace_alias_in_qualattr_list($5, $2);
 		if (qualattr_list == NULL) { // something wrong in qualattr_list
