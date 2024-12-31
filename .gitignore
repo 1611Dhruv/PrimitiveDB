@@ -3,3 +3,4 @@ demo
 dbcreate
 dbdestroy
 minirel
+compile_commands.json
