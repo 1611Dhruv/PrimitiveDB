@@ -40,10 +40,10 @@ all:		../parser.o
 y.tab.h:	parse.o
 
 parse.o:	parse.y
-		-rm -f y.tab.c
+		-rm -f y.tab.C
 		$(YACC) $(YFLAGS) $<
-		$(CXX) $(INC) -c y.tab.c -o $@
-		-rm -f y.tab.c
+		$(CXX) $(INC) -c y.tab.C -o $@
+		-rm -f y.tab.C
 
 scan.o:		y.tab.h scan.l scanhelp.C
 		-rm -f $*.C

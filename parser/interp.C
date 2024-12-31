@@ -40,7 +40,7 @@ static int parse_format_string(int format, int *type, int *len);
 static void *value_of(NODE *n);
 static int type_of(NODE *n);
 static int length_of(NODE *n);
-static void print_error(char *errmsg, int errval);
+static void print_error(const char *errmsg, int errval);
 static void echo_query(NODE *n);
 static void print_qual(NODE *n);
 static void print_attrnames(NODE *n);
@@ -64,15 +64,15 @@ extern "C" int isatty(int fd); // returns 1 if fd is a tty device
 //
 
 void interp(NODE *n) {
-  int nattrs;                 // number of attributes
-  int type;                   // attribute type
-  int len;                    // attribute length
-  int op;                     // comparison operator
-  NODE *temp, *temp1, *temp2; // temporary node pointers
-  char *attrname;             // temp attribute names
-  void *value;                // temp value
-  int nbuckets;               // temp number of buckets
-  int errval;                 // returned error value
+  int nattrs;                    // number of attributes
+  int type;                      // attribute type
+  [[maybe_unused]] int len;      // attribute length
+  int op;                        // comparison operator
+  NODE *temp, *temp1, *temp2;    // temporary node pointers
+  char *attrname;                // temp attribute names
+  void *value;                   // temp value
+  [[maybe_unused]] int nbuckets; // temp number of buckets
+  int errval;                    // returned error value
   RelDesc relDesc;
   Status status;
   int attrCnt, i, j;
@@ -279,7 +279,7 @@ void interp(NODE *n) {
                          (Operator)temp->u.SELECT.op, tmpValue);
 
       delete[] tmpValue;
-      delete[] attr1.attrValue;
+      delete[] static_cast<char *>(attr1.attrValue);
 
       if (errval != OK)
         error.print((Status)errval);
@@ -342,8 +342,8 @@ void interp(NODE *n) {
           strcpy(createAttrInfo[i].attrName, attrList[i].attrName);
 
           if (j != i)
-            sprintf(createAttrInfo[i].attrName, "%s_%d",
-                    createAttrInfo[i].attrName, counter++);
+            snprintf(createAttrInfo[i].attrName, MAXNAME, "%s_%d",
+                     createAttrInfo[i].attrName, counter++);
 
           status = attrCat->getInfo(attrList[i].relName, attrList[i].attrName,
                                     attrDesc);
@@ -432,7 +432,7 @@ void interp(NODE *n) {
     errval = QU_Insert(n->u.INSERT.relname, nattrs, attrList);
 
     for (acnt = 0; acnt < nattrs; acnt++)
-      delete[] attrList[acnt].attrValue;
+      delete[] static_cast<char *>(attrList[acnt].attrValue);
 
     if (errval != OK)
       error.print((Status)errval);
@@ -486,7 +486,7 @@ void interp(NODE *n) {
       errval = QU_Delete(n->u.DELETE.relname, "", (Operator)op, (Datatype)type,
                          (char *)value);
 
-    delete[] value;
+    delete[] static_cast<char *>(value);
 
     if (errval != OK)
       error.print((Status)errval);
@@ -863,13 +863,13 @@ static void *value_of(NODE *n) {
 
   switch (type_of(n)) {
   case INTEGER:
-    sprintf(value, "%d", n->u.VALUE.u.ival);
+    snprintf(value, 255, "%d", n->u.VALUE.u.ival);
     break;
   case FLOAT:
-    sprintf(value, "%f", n->u.VALUE.u.rval);
+    snprintf(value, 255, "%f", n->u.VALUE.u.rval);
     break;
   case STRING:
-    sprintf(value, "%s", n->u.VALUE.u.sval);
+    snprintf(value, 255, "%s", n->u.VALUE.u.sval);
   }
   if (!(newvalue = new char[strlen(value) + 1])) {
     fprintf(stderr, "could not allocate memory\n");
@@ -883,7 +883,7 @@ static void *value_of(NODE *n) {
 // print_error: prints an error message corresponding to errval
 //
 
-static void print_error(char *errmsg, int errval) {
+static void print_error(const char *errmsg, int errval) {
   if (errmsg != NULL)
     fprintf(stderr, "%s: ", errmsg);
   switch (errval) {
