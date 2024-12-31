@@ -73,12 +73,13 @@
      T_GE = 289,
      T_NE = 290,
      T_EOF = 291,
-     NOTOKEN = 292,
-     T_INT = 293,
-     T_REAL = 294,
-     T_STRING = 295,
-     T_QSTRING = 296,
-     T_SHELL_CMD = 297
+     T_STAR = 292,
+     NOTOKEN = 293,
+     T_INT = 294,
+     T_REAL = 295,
+     T_STRING = 296,
+     T_QSTRING = 297,
+     T_SHELL_CMD = 298
    };
 #endif
 /* Tokens.  */
@@ -116,12 +117,13 @@
 #define T_GE 289
 #define T_NE 290
 #define T_EOF 291
-#define NOTOKEN 292
-#define T_INT 293
-#define T_REAL 294
-#define T_STRING 295
-#define T_QSTRING 296
-#define T_SHELL_CMD 297
+#define T_STAR 292
+#define NOTOKEN 293
+#define T_INT 294
+#define T_REAL 295
+#define T_STRING 296
+#define T_QSTRING 297
+#define T_SHELL_CMD 298
 
 
 
@@ -136,7 +138,7 @@ typedef union YYSTYPE
   NODE *n;
 }
 /* Line 1529 of yacc.c.  */
-#line 140 "y.tab.h"
+#line 142 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
