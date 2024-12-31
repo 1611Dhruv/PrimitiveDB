@@ -1,0 +1,311 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "minirel.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/minirel.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "buf.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/buf.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "bufHash.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/bufHash.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "db.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/db.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "heapfile.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/heapfile.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "error.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/error.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "page.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/page.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "catalog.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/catalog.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "create.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/create.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "destroy.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/destroy.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "help.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/help.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "load.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/load.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "print.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/print.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "quit.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/quit.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "insert.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/insert.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "delete.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/delete.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "select.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/select.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "join.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/join.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "sort.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/sort.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "partition.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/partition.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "joinHT.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/joinHT.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I..",
+      "-g",
+      "-Wall",
+      "-c",
+      "nodes.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6/parser",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/parser/nodes.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I..",
+      "-g",
+      "-Wall",
+      "-c",
+      "interp.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6/parser",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/parser/interp.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "yywrap.c"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6/parser",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/parser/yywrap.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "dbcreate.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/dbcreate.C"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-DDEBUG",
+      "-c",
+      "dbdestroy.C"
+    ],
+    "directory": "/Users/ddesai/ComputerScience/CS564/p6",
+    "file": "/Users/ddesai/ComputerScience/CS564/p6/dbdestroy.C"
+  }
+]

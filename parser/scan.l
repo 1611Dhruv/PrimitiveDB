@@ -40,6 +40,7 @@ s_num				[+\-]?{num}
 "="				{return T_EQ;}
 "!="				{return T_NE;}
 "<>"				{return T_NE;}
+"*"				{return T_STAR;}  
 !				{BEGIN(shell_cmd);}
 <shell_cmd>[^\n]*		{yylval.sval = yytext; return T_SHELL_CMD;}
 <shell_cmd>\n			{BEGIN(INITIAL);}
