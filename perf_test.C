@@ -20,6 +20,10 @@ int main() {
   for (int i = 0; i < N; i++) {
     s += data[i];
   }
-  perf.stop();
-  std::cout << s << std::endl;
+
+  data[0] = s;
+  auto res = perf.stop();
+  for (auto &metric : res) {
+    std::cout << metric.name << ": " << metric.measure << std::endl;
+  }
 }
