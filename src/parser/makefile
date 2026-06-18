@@ -22,7 +22,7 @@ LEX =		flex
 LFLAGS =        -I -t
 
 YACC =		bison
-YFLAGS =        -y -d
+YFLAGS =        -d -o y.tab.C
 
 #
 # list of all object and source files

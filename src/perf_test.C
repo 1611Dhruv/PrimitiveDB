@@ -13,17 +13,16 @@ int main() {
       {PERF_TYPE_HARDWARE, PERF_COUNT_HW_INSTRUCTIONS, "Num Instructions"},
   });
 
-  perf.start();
   const int N = 1'000'000;
   static int data[N] = {0};
-  int s = 0;
-  for (int i = 0; i < N; i++) {
-    s += data[i];
-  }
 
-  data[0] = s;
-  auto res = perf.stop();
-  for (auto &metric : res) {
-    std::cout << metric.name << ": " << metric.measure << std::endl;
-  }
+  auto work = [&]() -> int {
+    int s = 0;
+    for (int i = 0; i < N; i++) {
+      s += data[i];
+    }
+    return s;
+  };
+
+  measure_perf::measure(perf, work, "test_measure.csv");
 }

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <linux/perf_event.h>
@@ -93,6 +94,14 @@ public:
     return res;
   }
 
+  std::vector<std::string> getMetricNames() {
+    std::vector<std::string> names;
+    for (const auto &[_, v] : _metric_reg) {
+      names.push_back(v);
+    }
+    return names;
+  }
+
   // Delete Copy for simplicity
   Perf(const Perf &other) = delete;
   Perf operator=(const Perf &other) = delete;
@@ -128,23 +137,50 @@ private:
   int _leader_fd;
 };
 
-// AI wrote this :P
+std::unordered_map<std::string, int> parseHeader(const std::string &path) {
+  std::ifstream fin(path);
+  std::unordered_map<std::string, int> order;
+  std::string line;
 
-// Compiler barrier: forces `value` to be materialized, so the optimizer can't
-// delete the workload that produced it across rounds. (Same trick Google
-// Benchmark uses for DoNotOptimize.)
+  if (!std::getline(fin, line))
+    return {};
+  std::stringstream ss(line);
+  std::string word;
+  int orderID = 0;
+  while (std::getline(ss, word, ',')) {
+    order[word] = orderID++;
+  }
+  return order;
+}
+
+// Compiler barrier
 template <typename T> inline void doNotOptimize(const T &value) {
   asm volatile("" : : "r,m"(value) : "memory");
 }
 
-// Run `work` for `rounds` measured iterations (after `warmup` discarded ones),
-// then report mean, sample standard deviation, and coefficient of variation
-// (cv% = stddev/mean) for every counter. Each round resets the group, so each
-// sample is that round's count on its own. `work` must return a value (its
-// checksum) so the loop can't be optimized away.
+// Writes measure to a log file
 template <typename Fn>
-void measure(Perf &perf, Fn &&work, int rounds = 10, int warmup = 1,
-             std::ostream &os = std::cout) {
+void measure(Perf &perf, Fn &&work, const std::string &path, int rounds = 10,
+             int warmup = 1) {
+
+  std::unordered_map<std::string, int> headers = parseHeader(path);
+  std::ofstream fout(path, std::ios::app);
+
+  int orderID = 0;
+  if (headers.empty()) {
+    bool first = true;
+    for (const auto &name : perf.getMetricNames()) {
+      if (!first) {
+        fout << ",";
+      }
+      fout << name;
+      first = false;
+      // Also add header
+      headers[name] = orderID++;
+    }
+    fout << std::endl;
+  }
+
   // Discarded warmup rounds: fault in pages, warm caches and predictors.
   for (int i = 0; i < warmup; i++) {
     perf.start();
@@ -153,49 +189,25 @@ void measure(Perf &perf, Fn &&work, int rounds = 10, int warmup = 1,
     doNotOptimize(sink);
   }
 
-  std::vector<std::string> order; // metric names, in first-seen order
-  std::unordered_map<std::string, std::vector<double>> samples;
-
   for (int r = 0; r < rounds; r++) {
     perf.start();
     auto sink = work();
     std::vector<PerfResult> round = perf.stop();
     doNotOptimize(sink);
 
-    for (const auto &pr : round) {
-      auto [it, inserted] = samples.try_emplace(pr.name);
-      if (inserted)
-        order.push_back(pr.name);
-      it->second.push_back(static_cast<double>(pr.measure));
+    std::vector<uint64_t> values(round.size(), 0);
+    for (const auto &measure : round) {
+      values[headers[measure.name]] = measure.measure;
     }
-  }
 
-  os << std::left << std::setw(24) << "metric" << std::right << std::setw(18)
-     << "mean" << std::setw(18) << "stddev" << std::setw(9) << "cv%"
-     << "   (n=" << rounds << ")\n";
-
-  for (const auto &name : order) {
-    const std::vector<double> &xs = samples[name];
-    double n = static_cast<double>(xs.size());
-
-    double mean = 0.0;
-    for (double x : xs)
-      mean += x;
-    mean /= n;
-
-    // two-pass variance: numerically safer than sum-of-squares, and avoids
-    // overflowing a uint64 accumulator when counts are in the billions
-    double ss = 0.0;
-    for (double x : xs) {
-      double d = x - mean;
-      ss += d * d;
+    bool first = true;
+    for (const auto &val : values) {
+      if (!first)
+        fout << ",";
+      fout << val;
+      first = false;
     }
-    double stddev = (n > 1.0) ? std::sqrt(ss / (n - 1.0)) : 0.0;
-    double cv = (mean != 0.0) ? 100.0 * stddev / mean : 0.0;
-
-    os << std::left << std::setw(24) << name << std::right << std::fixed
-       << std::setprecision(1) << std::setw(18) << mean << std::setw(18)
-       << stddev << std::setprecision(2) << std::setw(8) << cv << "%\n";
+    fout << std::endl;
   }
 }
 

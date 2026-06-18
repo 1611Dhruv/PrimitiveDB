@@ -43,29 +43,33 @@ SRCS =		buf.C  bufHash.C db.C heapfile.C error.C page.C \
 		dbcreate.C dbdestroy.C partition.C joinHT.C
 
 LIBS =		parser.o
+OUTDIR = ../out
 
-all:		minirel dbcreate dbdestroy
+all:		outdir minirel dbcreate dbdestroy
+
+outdir: 
+		mkdir -p $(OUTDIR)
 
 minirel:	minirel.o $(OBJS) $(LIBS)
-		$(CXX) -o $@ $@.o $(OBJS) $(LIBS) $(LDFLAGS) -lm
+		$(CXX) -o $(OUTDIR)/$@ $@.o $(OUTDIR)/$(OBJS) $(LIBS) $(LDFLAGS) -lm
 
 parser.o:
 		(cd parser; make)
 
 dbcreate:	dbcreate.o $(DBOBJS)
-		$(CXX) -o $@ $@.o $(DBOBJS) $(LDFLAGS) -lm
+		$(CXX) -o $(OUTDIR)/$@ $@.o $(OUTDIR)/$(DBOBJS) $(LDFLAGS) -lm
 
 dbdestroy:	dbdestroy.o
-		$(CXX) -o $@ $@.o
+		$(CXX) -o $(OUTDIR)/$@ $@.o
 
 minirel.pure:	minirel.o $(OBJS) $(LIBS)
-		$(PURIFY) $(CXX) -o $@ minirel.o $(OBJS) $(LIBS) $(LDFLAGS) -lm
+		$(PURIFY) $(CXX) -o $@ minirel.o $(OUTDIR)/$(OBJS) $(LIBS) $(LDFLAGS) -lm
 
 dbcreate.pure:	dbcreate.o $(DBOBJS) $(LIBS)
-		$(PURIFY) $(CXX) -o $@ dbcreate.o $(DBOBJS) $(LDFLAGS) -lm
+		$(PURIFY) $(CXX) -o $@ dbcreate.o $(OUTDIR)/$(DBOBJS) $(LDFLAGS) -lm
 
 .C.o:
-		$(CXX) $(CXXFLAGS) -c $<
+		$(CXX) $(CXXFLAGS) -c $< -o $(OUTDIR)/
 
 clean:
 		(rm -f core *.bak *~ *.o minirel dbcreate dbdestroy *.pure;cd parser;make clean)
