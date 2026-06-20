@@ -1,0 +1,16 @@
+/*
+ * selectivity — hold the input fixed (R_10k, ~320 pages, ~3x the pool) and
+ * sweep result size from 1% to 100%. The scan cost is constant; what changes
+ * is how many tuples get copied into the output relation. Isolates
+ * "output/materialization" cost from "scan" cost.
+ */
+
+create table R (unique1 int, unique2 int, pct int, ten int, fk int, name char(8));
+load table R from ("../data/R_10k.data");
+
+select unique1, unique2 into T_001 from R where pct < 1;    /*  ~1% */
+select unique1, unique2 into T_005 from R where pct < 5;    /*  ~5% */
+select unique1, unique2 into T_010 from R where pct < 10;   /* ~10% */
+select unique1, unique2 into T_025 from R where pct < 25;   /* ~25% */
+select unique1, unique2 into T_050 from R where pct < 50;   /* ~50% */
+select unique1, unique2 into T_100 from R where pct < 100;  /* 100% */

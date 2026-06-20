@@ -1,9 +1,22 @@
 #ifndef QUERY_H
 #define QUERY_H
 
+#include <string>
 #include "heapfile.h"
 
 enum JoinType {NLJoin, SMJoin, HashJoin};
+
+//
+// Path stem for perf "measure" log files, set by minirel from its optional
+// command-line prefix (see minirel.C). The measurement code builds a concrete
+// path with, e.g., logPath("_measure.csv") -> "<prefix>_measure.csv".
+//
+extern std::string LogPrefix;
+
+inline std::string logPath(const std::string & suffix)
+{
+  return LogPrefix + suffix;
+}
 
 //
 // Prototypes for query layer functions

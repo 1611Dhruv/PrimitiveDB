@@ -1,0 +1,19 @@
+/*
+ * scan_small — sequential scan + selection, IN-CACHE regime.
+ *
+ * R_1k is ~32 pages, which fits inside the 100-frame buffer pool, so this
+ * measures pure scan/CPU cost with no disk-read noise. Results go `into`
+ * throwaway relations, so only a tuple COUNT is printed, not the rows.
+ */
+
+create table R (unique1 int, unique2 int, pct int, ten int, fk int, name char(8));
+load table R from ("../data/R_1k.data");
+
+/* full scan, project one column (100% of tuples touched) */
+select unique1 into T_full from R;
+
+/* selections at increasing selectivity (pct is 0..99) */
+select unique1 into T_01 from R where pct < 1;    /*  ~1% */
+select unique1 into T_10 from R where pct < 10;   /* ~10% */
+select unique1 into T_50 from R where pct < 50;   /* ~50% */
+select unique1 into T_99 from R where pct < 100;  /* 100% */

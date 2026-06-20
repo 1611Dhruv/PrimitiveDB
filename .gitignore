@@ -5,3 +5,6 @@ dbdestroy
 minirel
 compile_commands.json
 .cache
+logs/
+_testdb_*
+data/*.data

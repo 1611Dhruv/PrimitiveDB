@@ -1,0 +1,18 @@
+/*
+ * join_nl — equi-join exercising the (only fully implemented) Nested Loops
+ * join. R_1k.fk references S_1k.unique2, so every R row matches exactly one S
+ * row: 1000 result tuples, but 1000 x 1000 = 1,000,000 tuple comparisons.
+ *
+ * NL join is O(|R| x |S|): the inner relation is rescanned once per outer
+ * tuple, so this is where buffer-pool behavior and CPU cost blow up as the
+ * inputs grow. (SM and Hash joins are currently stubs — see join.C.)
+ */
+
+create table R (unique1 int, unique2 int, pct int, ten int, fk int, name char(8));
+load table R from ("../data/R_1k.data");
+
+create table S (unique1 int, unique2 int, pct int, ten int, fk int, name char(8));
+load table S from ("../data/S_1k.data");
+
+/* equi-join on R.fk = S.unique2, project from both sides */
+select R.unique1, S.unique1, S.ten into J from R, S where R.fk = S.unique2;

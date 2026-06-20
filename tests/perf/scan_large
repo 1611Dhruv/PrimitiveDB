@@ -1,0 +1,20 @@
+/*
+ * scan_large — sequential scan + selection, DISK/BUFFER-BOUND regime.
+ *
+ * R_100k is ~3200 pages vs. a 100-frame (~100 KB) buffer pool — 32x too big —
+ * so every full scan streams from disk and the buffer manager's diskread
+ * counter dominates. Compare against scan_small to see the in-cache vs.
+ * out-of-core gap. Results go `into` throwaway relations (count only).
+ */
+
+create table R (unique1 int, unique2 int, pct int, ten int, fk int, name char(8));
+load table R from ("../data/R_100k.data");
+
+/* full scan, project one column (100% of tuples touched) */
+select unique1 into T_full from R;
+
+/* selections at increasing selectivity (pct is 0..99) */
+select unique1 into T_01 from R where pct < 1;    /*  ~1% */
+select unique1 into T_10 from R where pct < 10;   /* ~10% */
+select unique1 into T_50 from R where pct < 50;   /* ~50% */
+select unique1 into T_99 from R where pct < 100;  /* 100% */
