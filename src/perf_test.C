@@ -1,7 +1,7 @@
 #include <iostream>
 #include <linux/perf_event.h>
 
-#include "perf_counters.hpp"
+#include "perf_measure.hpp"
 
 int main() {
   measure_perf::Perf perf({

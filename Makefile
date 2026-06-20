@@ -29,7 +29,7 @@ LIBS =		-lm
 OBJS =		buf.o bufHash.o db.o heapfile.o error.o page.o \
 		catalog.o create.o destroy.o \
 		help.o load.o print.o quit.o insert.o delete.o \
-		select.o join.o sort.o partition.o joinHT.o
+		select.o join.o sort.o partition.o joinHT.o perf_measure.o
 
 DBOBJS =	catalog.o buf.o bufHash.o db.o heapfile.o error.o page.o
 
@@ -79,8 +79,10 @@ $(OUTDIR)/dbdestroy:	$(OBJDIR)/dbdestroy.o
 #
 perf:		$(OUTDIR)/perf_test
 
-$(OUTDIR)/perf_test:	$(SRCDIR)/perf_test.C $(SRCDIR)/perf_counters.hpp | $(OUTDIR)
-		$(CXX) -std=c++17 $(CXXFLAGS) -o $@ $(SRCDIR)/perf_test.C
+$(OUTDIR)/perf_test:	$(SRCDIR)/perf_test.C $(SRCDIR)/perf_measure.C \
+			$(SRCDIR)/perf_measure.hpp $(SRCDIR)/perf_counters.hpp | $(OUTDIR)
+		$(CXX) -std=c++17 $(CXXFLAGS) -o $@ \
+			$(SRCDIR)/perf_test.C $(SRCDIR)/perf_measure.C
 
 #
 # Perf-test data: build the generator, then write the standard relations into

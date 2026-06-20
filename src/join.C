@@ -1,8 +1,11 @@
 #include "catalog.h"
 #include "joinHT.h"
+#include "perf_counters.hpp"
+#include "perf_measure.hpp"
 #include "query.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include <linux/perf_event.h>
 
 extern JoinType JoinMethod;
 
@@ -190,12 +193,50 @@ const Status QU_Join(const string &result, const int projCnt,
                      const attrInfo projNames[], const attrInfo *attr1,
                      const Operator op, const attrInfo *attr2) {
 
+  measure_perf::Perf p({
+      {
+          PERF_TYPE_HW_CACHE,
+          PERF_COUNT_HW_CACHE_L1D | (PERF_COUNT_HW_CACHE_OP_READ << 8) |
+              (PERF_COUNT_HW_CACHE_RESULT_MISS << 16),
+          "l1d_read_miss",
+      },
+      {
+          PERF_TYPE_HW_CACHE,
+          PERF_COUNT_HW_CACHE_L1D | (PERF_COUNT_HW_CACHE_OP_READ << 8) |
+              (PERF_COUNT_HW_CACHE_RESULT_MISS << 16),
+          "l1d_read_miss",
+      },
+      {
+          PERF_WALL_TIME,
+          0,
+          "latency",
+      },
+      {
+          PERF_TYPE_HARDWARE,
+          PERF_COUNT_HW_CACHE_MISSES,
+          "llc_misses",
+      },
+      {
+          PERF_TYPE_HARDWARE,
+          PERF_COUNT_HW_CACHE_REFERENCES,
+          "llc_references",
+      },
+  });
+
+  Status stat;
+  p.start();
   if ((JoinMethod == NLJoin) || ((JoinMethod == HashJoin) && (op != EQ))) {
-    return QU_NL_Join(result, projCnt, projNames, attr1, op, attr2);
+    stat = QU_NL_Join(result, projCnt, projNames, attr1, op, attr2);
   } else if (JoinMethod == SMJoin) {
-    return QU_SM_Join(result, projCnt, projNames, attr1, op, attr2);
+    stat = QU_SM_Join(result, projCnt, projNames, attr1, op, attr2);
   } else
-    return QU_Hash_Join(result, projCnt, projNames, attr1, op, attr2);
+    stat = QU_Hash_Join(result, projCnt, projNames, attr1, op, attr2);
+
+  // Get the result
+  std::vector<measure_perf::PerfResult> perf = p.stop();
+  measure_perf::logOne(p, perf, "join.perf");
+
+  return stat;
 }
 
 const int matchRec(const Record &outerRec, const Record &innerRec,
