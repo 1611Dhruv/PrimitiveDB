@@ -1,6 +1,5 @@
 #include "catalog.h"
 #include "joinHT.h"
-#include "perf_counters.hpp"
 #include "perf_measure.hpp"
 #include "query.h"
 #include "stdio.h"
@@ -201,15 +200,19 @@ const Status QU_Join(const string &result, const int projCnt,
           "l1d_read_miss",
       },
       {
-          PERF_TYPE_HW_CACHE,
-          PERF_COUNT_HW_CACHE_L1D | (PERF_COUNT_HW_CACHE_OP_READ << 8) |
-              (PERF_COUNT_HW_CACHE_RESULT_MISS << 16),
-          "l1d_read_miss",
-      },
-      {
           PERF_WALL_TIME,
           0,
           "latency",
+      },
+      {
+          PERF_TYPE_HARDWARE,
+          PERF_COUNT_HW_INSTRUCTIONS,
+          "instructions",
+      },
+      {
+          PERF_TYPE_HARDWARE,
+          PERF_COUNT_HW_CPU_CYCLES,
+          "cpu_cycles",
       },
       {
           PERF_TYPE_HARDWARE,
