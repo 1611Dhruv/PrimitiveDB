@@ -85,26 +85,24 @@ $(OUTDIR)/perf_test:	$(SRCDIR)/perf_test.C $(SRCDIR)/perf_measure.C \
 			$(SRCDIR)/perf_test.C $(SRCDIR)/perf_measure.C
 
 #
-# Perf-test data: build the generator, then write the standard relations into
-# data/ (R_1k fits the buffer pool; R_10k/R_100k spill it; S_1k is the join
-# build side). See tests/perf/README.md.
+# Perf-test data: write the standard relations into data/ via gen_data.py
+# (R_1k fits the buffer pool; R_10k/R_100k spill it; S_1k is the join build
+# side). See tests/perf/README.md.
 #
-GENDATA = $(OUTDIR)/gen_data
-
-$(GENDATA):	data/gen_data.cpp | $(OUTDIR)
-		$(CXX) -std=c++17 -O2 -Wall -o $@ data/gen_data.cpp
+GEN    = python3 data/gen_data.py
+SCHEMA = unique1:int:uniq,unique2:int:seq,pct:int:mod(100),ten:int:mod(10),fk:int:mod(1000),name:char(8)
 
 .PHONY: data
-data:		$(GENDATA)
-		$(GENDATA) 1000   1000 data/R_1k.data
-		$(GENDATA) 10000  1000 data/R_10k.data
-		$(GENDATA) 100000 1000 data/R_100k.data
-		$(GENDATA) 1000   1000 data/S_1k.data
+data:
+		$(GEN) -n 1000   -s "$(SCHEMA)" -o data/R_1k.data
+		$(GEN) -n 10000  -s "$(SCHEMA)" -o data/R_10k.data
+		$(GEN) -n 100000 -s "$(SCHEMA)" -o data/R_100k.data
+		$(GEN) -n 1000   -s "$(SCHEMA)" -o data/S_1k.data
 
 $(OUTDIR):
 		mkdir -p $(OUTDIR)
 
 clean:
 		rm -rf $(OBJDIR)
-		rm -f $(BINS) $(OUTDIR)/perf_test $(GENDATA) $(PARSEROBJ)
+		rm -f $(BINS) $(OUTDIR)/perf_test $(PARSEROBJ)
 		$(MAKE) -C $(PARSER) clean

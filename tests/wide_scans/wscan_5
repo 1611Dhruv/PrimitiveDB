@@ -1,0 +1,4 @@
+create table WIDE (f1 int, f2 int, f3 int, f4 int, f5 int, f6 int, f7 int, f8 int);
+load table WIDE from ("../data/WIDE_1000000.data");
+
+select f1, f2, f3, f4, f5 INTO res1 FROM WIDE;

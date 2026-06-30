@@ -21,7 +21,7 @@ set -euo pipefail
 # Locate the repo from this script's own path, so it runs from anywhere.
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUT="$ROOT/out"
-QUERYDIR="$ROOT/tests/perf"
+QUERYDIR="$ROOT/tests/"
 DBCREATE="$OUT/dbcreate"
 DBDESTROY="$OUT/dbdestroy"
 MINIREL="$OUT/minirel"
